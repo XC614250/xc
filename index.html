@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>表情包点击计数器</title>
+    <style>
+        body {
+            text-align: center;
+            padding: 50px;
+            background-color: #f5f5f5;
+        }
+        .img-container {
+            margin: 20px auto;
+            max-width: 500px;
+        }
+        .img-container img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .count-text {
+            font-size: 20px;
+            color: #333;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="img-container">
+        <!-- 你的表情包链接 -->
+        <img src="https://i.postimg.cc/j54WBhV6/Screenshot-20260113-142623-com-xingin-xhs-edit-3236855072622760.jpg" alt="表情包">
+    </div>
+    <div class="count-text">您是第 <span id="visitCount">0</span> 个点击这个链接的人</div>
+
+    <script>
+        // 使用免费的计数API（无需注册，直接调用）
+        const countApiUrl = "https://api.countapi.xyz/hit/your-custom-name/visit-count";
+        
+        // 获取并展示计数
+        fetch(countApiUrl)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("visitCount").innerText = data.value;
+            })
+            .catch(err => {
+                console.error("计数获取失败", err);
+                document.getElementById("visitCount").innerText = "未知";
+            });
+    </script>
+</body>
+</html>
+
