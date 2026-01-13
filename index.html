@@ -2,50 +2,51 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>表情包点击计数器</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表情包计数器</title>
     <style>
         body {
-            text-align: center;
-            padding: 50px;
-            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
         }
-        .img-container {
-            margin: 20px auto;
-            max-width: 500px;
-        }
-        .img-container img {
-            width: 100%;
+        .meme-img {
+            max-width: 80%;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
-        .count-text {
-            font-size: 20px;
+        .counter-text {
+            font-size: 18px;
             color: #333;
-            margin-top: 30px;
-            font-weight: bold;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
-    <div class="img-container">
-        <!-- 你的表情包链接 -->
-        <img src="https://i.postimg.cc/j54WBhV6/Screenshot-20260113-142623-com-xingin-xhs-edit-3236855072622760.jpg" alt="表情包">
-    </div>
-    <div class="count-text">您是第 <span id="visitCount">0</span> 个点击这个链接的人</div>
+    <!-- 表情包图片 -->
+    <img src="https://i.postimg.cc/j54WBhV6/Screenshot-20260113-142623-com-xingin-xhs-edit-3236855072622760.jpg" alt="表情包" class="meme-img">
+    <!-- 计数器文字 -->
+    <div class="counter-text">您是第<span id="visitCount">0</span>个点击这个链接的人</div>
 
     <script>
-        // 使用免费的计数API（无需注册，直接调用）
-        const countApiUrl = "https://api.countapi.xyz/hit/your-penguincounter-/visit-count";
+        // 免费计数API，把 your-unique-name 改成任意独一无二的名字（比如 bl-rp-meme-001）
+        const apiUrl = "https://api.countapi.xyz/hit/bl-rp-meme-counter/visits";
         
-        // 获取并展示计数
-        fetch(countApiUrl)
+        // 获取计数并显示
+        fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                document.getElementById("visitCount").innerText = data.value;
+                document.getElementById("visitCount").textContent = data.value;
             })
-            .catch(err => {
-                console.error("计数获取失败", err);
-                document.getElementById("visitCount").innerText = "未知";
+            .catch(error => {
+                console.error("计数加载失败:", error);
+                document.getElementById("visitCount").textContent = "N";
             });
     </script>
 </body>
