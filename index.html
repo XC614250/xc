@@ -8,11 +8,10 @@
     <p>您是第<span id="count">0</span>个点击这个链接的人</p>
 
     <script>
-        // 使用 localStorage 存储计数
-        let count = localStorage.getItem('visitCount') || 0;
-        count++;
-        localStorage.setItem('visitCount', count);
-        document.getElementById('count').textContent = count;
+        fetch('https://api.countapi.xyz/hit/scylikeyou/visits')
+.then(res => res.json())
+.then(data => document.getElementById('count').textContent = data.value);
+
     </script>
 </body>
 </html>
