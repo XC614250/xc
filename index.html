@@ -1,17 +1,392 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title>表情包计数器</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cealis的幸运转盘</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: #e6221c;
+            --theme-color: #e6221c;
+            --text-white: #ffffff;
+            --highlight: #fff0b3;
+            --text-dark: #333333;
+            --wheel-border: #fdd835;
+            --modal-bg: rgba(0, 0, 0, 0.7);
+            --shadow-light: 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-deep: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
+            background-color: var(--main-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            color: var(--text-white);
+            position: relative;
+        }
+
+        .top-text {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--highlight);
+            text-shadow: var(--shadow-deep);
+            margin-bottom: 20px;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin: 40px auto 20px;
+        }
+
+        .pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 50px;
+            background-color: var(--theme-color);
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+            z-index: 20;
+            border: 3px solid var(--text-white);
+            border-bottom: none;
+            box-shadow: var(--shadow-light);
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 8px solid var(--wheel-border);
+            background: conic-gradient(
+                #fce4ec 0deg 45deg, #fff3e0 45deg 90deg,
+                #fce4ec 90deg 135deg, #fff3e0 135deg 180deg,
+                #fce4ec 180deg 225deg, #fff3e0 225deg 270deg,
+                #fce4ec 270deg 315deg, #fff3e0 315deg 360deg
+            );
+            position: relative;
+            transition: transform 4s cubic-bezier(0.3, 0, 0.2, 1);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        .prize {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            top: 0;
+            left: 25%;
+            transform-origin: bottom center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 15px;
+        }
+
+        .prize-icon {
+            font-size: 18px;
+            color: var(--theme-color);
+            margin-bottom: 4px;
+        }
+
+        .prize-text {
+            font-size: 12px;
+            line-height: 1.2;
+            font-weight: 500;
+            color: var(--text-dark);
+            max-width: 85%;
+            word-wrap: break-word;
+            text-align: center;
+        }
+
+        .spin-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px;
+            height: 90px;
+            background-color: var(--theme-color);
+            border: 4px solid var(--highlight);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-light);
+        }
+
+        .spin-btn:hover:not(:disabled) {
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+
+        .spin-btn:active:not(:disabled) {
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+
+        .spin-btn:disabled {
+            cursor: not-allowed;
+            background-color: #cccccc;
+            border-color: #eeeeee;
+            opacity: 0.7;
+        }
+
+        .spin-text {
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 1.1;
+            color: var(--text-white);
+        }
+
+        .spin-chance {
+            font-size: 12px;
+            line-height: 1;
+            color: var(--highlight);
+        }
+
+        .share-tip {
+            margin-top: 30px;
+            padding: 12px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            font-size: 1.1em;
+        }
+
+        .share-tip a {
+            color: var(--highlight);
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--text-white);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 90%;
+            color: var(--text-dark);
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            box-shadow: var(--shadow-light);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .modal-content p {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--theme-color);
+        }
+    </style>
 </head>
 <body>
-    <img src="https://i.postimg.cc/j54WBhV6/Screenshot-20260113-142623-com-xingin-xhs-edit-3236855072622760.jpg" alt="表情包">
-    <p>您是第<span id="count">0</span>个点击这个链接的人</p>
+    <div class="container">
+        <div class="top-text">您就差0.01就可以领取大奖</div>
+        
+        <div class="wheel-container">
+            <div class="pointer"></div>
+            <div id="wheel" class="wheel"></div>
+            <button id="spin-btn" class="spin-btn">
+                <span class="spin-text">抽奖</span>
+                <span class="spin-chance" id="chance-counter">(剩1次)</span>
+            </button>
+        </div>
+
+        <div class="share-tip">
+            还差一次？<a id="share-link">邀请好友</a>获得更多机会！
+        </div>
+    </div>
+
+    <div id="modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="modal-close" class="modal-close">&times;</button>
+            <img id="result-img" src="https://i.postimg.cc/9QLxTsJv/Screenshot-20260113-153204-com-xingin-xhs-edit-3240789788977889.jpg" alt="彩蛋结果">
+            <p id="result-text">恭喜你啊，年轻人，你被我恭喜到了</p>
+        </div>
+    </div>
 
     <script>
-        fetch('https://api.countapi.xyz/hit/scylikeyou/visits')
-.then(res => res.json())
-.then(data => document.getElementById('count').textContent = data.value);
+        (function lottery() {
+            // DOM元素获取
+            const wheel = document.getElementById('wheel');
+            const spinBtn = document.getElementById('spin-btn');
+            const chanceCounter = document.getElementById('chance-counter');
+            const shareLink = document.getElementById('share-link');
+            const modal = document.getElementById('modal');
+            const modalClose = document.getElementById('modal-close');
+            const resultText = document.getElementById('result-text');
 
+            // 奖品配置 - 第5个为神秘彩蛋（索引4）
+            const prizes = [
+                { name: '典藏飞机杯', icon: 'fa-rocket' },
+                { name: '吸吮小玩具', icon: 'fa-wind' },
+                { name: '情侣共振器', icon: 'fa-heart' },
+                { name: '音波吮吸器', icon: 'fa-wave-square' },
+                { name: '神秘彩蛋', icon: 'fa-gifts' },
+                { name: '智能遥控棒', icon: 'fa-star-of-life' },
+                { name: '迷你小章鱼', icon: 'fa-microchip' },
+                { name: '变频震动棒', icon: 'fa-bolt' },
+            ];
+            const prizeCount = prizes.length;
+            const anglePerPrize = 360 / prizeCount; 
+            const eggIndex = 4; // 彩蛋固定索引
+            let currentRotation = 0; 
+            let isSpinning = false; 
+            let chances = 1; 
+
+            // 更新剩余次数显示
+            const updateChanceDisplay = () => {
+                chanceCounter.textContent = `(剩${chances}次)`;
+            };
+
+            // 生成奖品扇区
+            const renderPrizes = () => {
+                prizes.forEach((prize, index) => {
+                    const prizeEl = document.createElement('div');
+                    prizeEl.className = 'prize';
+                    prizeEl.style.transform = `rotate(${index * anglePerPrize + anglePerPrize / 2}deg)`;
+                    prizeEl.innerHTML = `
+                        <i class="fas ${prize.icon} prize-icon"></i>
+                        <span class="prize-text">${index + 1}. ${prize.name}</span>
+                    `;
+                    wheel.appendChild(prizeEl);
+                });
+            };
+
+            // 抽奖旋转逻辑 - 强制必中彩蛋
+            const handleSpin = () => {
+                if (isSpinning || chances <= 0) {
+                    chances <= 0 && alert('抽奖机会已用完，请分享获取更多机会！');
+                    return;
+                }
+
+                // 状态锁定与UI更新
+                isSpinning = true;
+                chances--;
+                spinBtn.disabled = true;
+                spinBtn.querySelector('.spin-text').textContent = '转动中';
+                updateChanceDisplay();
+
+                // 固定旋转圈数（5-8圈随机，保持动画真实感）
+                const randomSpins = Math.floor(Math.random() * 4) + 5;
+                // 直接计算彩蛋的目标角度
+                const eggTargetAngle = eggIndex * anglePerPrize + anglePerPrize / 2;
+                // 最终旋转角度 = 当前角度 + 随机圈数*360 - 彩蛋目标角度
+                const finalRotation = currentRotation + randomSpins * 360 - eggTargetAngle;
+
+                // 执行旋转动画
+                wheel.style.transform = `rotate(${finalRotation}deg)`;
+
+                // 旋转结束回调
+                setTimeout(() => {
+                    isSpinning = false;
+                    spinBtn.disabled = false;
+                    spinBtn.querySelector('.spin-text').textContent = '抽奖';
+                    // 核心修改：替换弹窗文本
+                    resultText.textContent = `恭喜你啊，被我恭喜到了(o^^o)`;
+                    modal.classList.add('active');
+                    // 更新当前角度，下次旋转基于此角度继续
+                    currentRotation = finalRotation;
+                }, 4000);
+            };
+
+            // 事件绑定
+            const bindEvents = () => {
+                spinBtn.addEventListener('click', handleSpin);
+                shareLink.addEventListener('click', () => {
+                    alert('分享成功！已为您增加一次抽奖机会。');
+                    chances++;
+                    updateChanceDisplay();
+                });
+                modalClose.addEventListener('click', () => modal.classList.remove('active'));
+                modal.addEventListener('click', (e) => e.target === modal && modal.classList.remove('active'));
+            };
+
+            // 初始化
+            const init = () => {
+                renderPrizes();
+                updateChanceDisplay();
+                bindEvents();
+            };
+
+            init();
+        })();
     </script>
 </body>
 </html>
