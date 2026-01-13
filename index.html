@@ -1,53 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>表情包计数器</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f0f2f5;
-            font-family: Arial, sans-serif;
-        }
-        .meme-img {
-            max-width: 80%;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        .counter-text {
-            font-size: 18px;
-            color: #333;
-            font-weight: 600;
-        }
-    </style>
 </head>
 <body>
-    <!-- 表情包图片 -->
-    <img src="https://i.postimg.cc/j54WBhV6/Screenshot-20260113-142623-com-xingin-xhs-edit-3236855072622760.jpg" alt="表情包" class="meme-img">
-    <!-- 计数器文字 -->
-    <div class="counter-text">您是第<span id="visitCount">0</span>个点击这个链接的人</div>
+    <img src="https://i.postimg.cc/j54WBhV6/Screenshot-20260113-142623-com-xingin-xhs-edit-3236855072622760.jpg" alt="表情包">
+    <p>您是第<span id="count">0</span>个点击这个链接的人</p>
 
     <script>
-        // 免费计数API，把 your-unique-name 改成任意独一无二的名字（比如 bl-rp-meme-001）
-        const apiUrl = "https://api.countapi.xyz/hit/bl-rp-meme-counter/visits";
-        
-        // 获取计数并显示
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("visitCount").textContent = data.value;
-            })
-            .catch(error => {
-                console.error("计数加载失败:", error);
-                document.getElementById("visitCount").textContent = "N";
-            });
+        // 使用 localStorage 存储计数
+        let count = localStorage.getItem('visitCount') || 0;
+        count++;
+        localStorage.setItem('visitCount', count);
+        document.getElementById('count').textContent = count;
     </script>
 </body>
 </html>
