@@ -67,46 +67,62 @@
   }
 </style>
 </head>
-
 <body>
-<div class="danmaku" id="danmaku"></div>
+  <div class="danmaku" id="danmaku"></div>
 
-<script>
-  const danmaku = document.getElementById('danmaku');
+  <script>
+    // 多条祝福弹幕列表
+    const blessings = [
+      '祝源源天天开心',
+      '祝源源永远可爱',
+      '祝源源平安喜乐',
+      '祝源源万事顺意',
+      '祝源源被爱包围',
+      '祝源源心想事成',
+      '祝源源无忧无虑',
+      '祝源源闪闪发光'
+    ];
 
-  // 弹幕：祝源源天天开心
-  for (let i = 0; i < 40; i++) {
-    setTimeout(() => {
+    const danmaku = document.getElementById('danmaku');
+
+    // 生成单条弹幕
+    function createDanmaku() {
       const b = document.createElement('div');
       b.className = 'bubble';
-      b.innerText = '祝源源天天开心';
+      b.innerText = blessings[Math.floor(Math.random() * blessings.length)];
       b.style.top = Math.random() * 90 + '%';
-      b.style.animationDuration = (Math.random() * 12 + 8) + 's';
-      b.style.opacity = Math.random() * 0.4 + 0.5;
+      b.style.animationDuration = (Math.random() * 3 + 3) + 's'; // 3-6秒，速度更快
+      b.style.opacity = Math.random() * 0.4 + 0.6;
       danmaku.appendChild(b);
-      setTimeout(() => b.remove(), parseFloat(b.style.animationDuration) * 1000);
-    }, i * 250);
-  }
+      setTimeout(() => {
+        if (b.parentNode) b.parentNode.removeChild(b);
+      }, parseFloat(b.style.animationDuration) * 1000);
+    }
 
-  // 点击回复
-  const replies = [
-    '源源天下第一可爱！(* /ω＼*)',
-    '源源最最最可爱啦～(๑˃̵ᴗ˂̵)و',
-    '全世界最喜欢源源！(｡･ω･｡)ﾉ♡',
-    '源源可爱到爆炸！(*≧∀≦*)',
-    '源源是小天使！(｡•̀ᴗ-)✧',
-    '源源可爱无敌！(๑˃̵ᴗ˂̵)و'
-  ];
+    // 源源不断生成弹幕（每150ms一条）
+    setInterval(createDanmaku, 150);
 
-  document.addEventListener('click', (e) => {
-    const tip = document.createElement('div');
-    tip.className = 'click-tip';
-    tip.innerText = replies[Math.floor(Math.random() * replies.length)];
-    tip.style.left = e.clientX - tip.offsetWidth / 2 + 'px';
-    tip.style.top = e.clientY - 20 + 'px';
-    document.body.appendChild(tip);
-    setTimeout(() => tip.remove(), 800);
-  });
-</script>
+    // 点击回复
+    const replies = [
+      '源源天下第一可爱！(* /ω＼*)',
+      '源源最最最可爱啦～(๑˃̵ᴗ˂̵)و',
+      '全世界最喜欢源源！(｡･ω･｡)ﾉ♡',
+      '源源可爱到爆炸！(*≧∀≦*)',
+      '源源是小天使！(｡•̀ᴗ-)✧',
+      '源源可爱无敌！(๑˃̵ᴗ˂̵)و'
+    ];
+
+    document.addEventListener('click', (e) => {
+      const tip = document.createElement('div');
+      tip.className = 'click-tip';
+      tip.innerText = replies[Math.floor(Math.random() * replies.length)];
+      tip.style.left = e.clientX - tip.offsetWidth / 2 + 'px';
+      tip.style.top = e.clientY - 20 + 'px';
+      document.body.appendChild(tip);
+      setTimeout(() => {
+        if (tip.parentNode) tip.parentNode.removeChild(tip);
+      }, 800);
+    });
+  </script>
 </body>
 </html>
