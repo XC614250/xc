@@ -17,7 +17,6 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
 
-  /* 弹幕层 */
   .danmaku {
     position: fixed;
     top: 0;
@@ -28,7 +27,6 @@
     z-index: 1;
   }
 
-  /* 玻璃弹幕 */
   .bubble {
     position: absolute;
     padding: 10px 20px;
@@ -41,7 +39,7 @@
     border: 1px solid rgba(255, 180, 210, 0.4);
     box-shadow: 0 4px 15px rgba(255, 120, 170, 0.15);
     animation: float linear infinite;
-    font-size: clamp(16px, 4vw, 24px); /* 适配手机字体 */
+    font-size: clamp(16px, 4vw, 24px);
   }
 
   @keyframes float {
@@ -49,7 +47,6 @@
     100% { transform: translateX(-105vw); }
   }
 
-  /* 点击弹出文字 */
   .click-tip {
     position: fixed;
     color: #ff4a8e;
@@ -57,7 +54,7 @@
     pointer-events: none;
     animation: clickPop 0.8s forwards;
     z-index: 999;
-    font-size: clamp(18px, 5vw, 28px); /* 适配手机字体 */
+    font-size: clamp(18px, 5vw, 28px);
     text-shadow: 0 2px 4px rgba(255, 74, 142, 0.2);
   }
 
@@ -71,7 +68,6 @@
   <div class="danmaku" id="danmaku"></div>
 
   <script>
-    // 多条祝福弹幕列表
     const blessings = [
       '祝源源天天开心',
       '祝源源永远可爱',
@@ -85,13 +81,12 @@
 
     const danmaku = document.getElementById('danmaku');
 
-    // 生成单条弹幕
     function createDanmaku() {
       const b = document.createElement('div');
       b.className = 'bubble';
       b.innerText = blessings[Math.floor(Math.random() * blessings.length)];
       b.style.top = Math.random() * 90 + '%';
-      b.style.animationDuration = (Math.random() * 3 + 3) + 's'; // 3-6秒，速度更快
+      b.style.animationDuration = (Math.random() * 6 + 8) + 's';
       b.style.opacity = Math.random() * 0.4 + 0.6;
       danmaku.appendChild(b);
       setTimeout(() => {
@@ -99,10 +94,9 @@
       }, parseFloat(b.style.animationDuration) * 1000);
     }
 
-    // 源源不断生成弹幕（每150ms一条）
-    setInterval(createDanmaku, 150);
+    // 超多发弹幕：每 200 毫秒一条，超级多
+    setInterval(createDanmaku, 200);
 
-    // 点击回复
     const replies = [
       '源源天下第一可爱！(* /ω＼*)',
       '源源最最最可爱啦～(๑˃̵ᴗ˂̵)و',
