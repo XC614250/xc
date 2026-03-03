@@ -69,79 +69,45 @@
 </head>
 
 <body>
-  <!-- 音乐播放核心：自动播放、循环 -->
-  <audio id="music" autoplay loop muted>
-    <source src="https://music.163.com/song/media/outer/url?id=2115626646.mp3" type="audio/mpeg">
-  
+<div class="danmaku" id="danmaku"></div>
 
-  <div class="danmaku" id="danmaku"></div>
+<script>
+  const danmaku = document.getElementById('danmaku');
 
-  <script>
-    // 音乐自动播放并解除静音
-    const music = document.getElementById('music');
-    window.addEventListener('load', () => {
-      music.play().then(() => {
-        music.muted = false; // 播放后解除静音
-      }).catch(err => {
-        console.log('自动播放失败，尝试用户交互后播放:', err);
-        // 如果浏览器阻止自动播放，首次点击后播放
-        document.addEventListener('click', () => {
-          music.play();
-          music.muted = false;
-        }, { once: true });
-      });
-    });
+  // 弹幕：祝源源天天开心
+  for (let i = 0; i < 40; i++) {
+    setTimeout(() => {
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      b.innerText = '祝源源天天开心';
+      b.style.top = Math.random() * 90 + '%';
+      b.style.animationDuration = (Math.random() * 12 + 8) + 's';
+      b.style.opacity = Math.random() * 0.4 + 0.5;
+      danmaku.appendChild(b);
+      setTimeout(() => b.remove(), parseFloat(b.style.animationDuration) * 1000);
+    }, i * 250);
+  }
 
-    // 不同祝福弹幕列表
-    const blessings = [
-      '祝源源天天开心',
-      '祝源源永远可爱',
-      '祝源源被爱包围',
-      '祝源源万事顺意',
-      '祝源源平安喜乐',
-      '祝源源闪闪发光',
-      '祝源源心想事成',
-      '祝源源无忧无虑',
-      '祝源源前程似锦',
-      '祝源源笑口常开'
-    ];
+  // 点击回复
+  const replies = [
+    '源源天下第一可爱！(* /ω＼*)',
+    '源源最最最可爱啦～(๑˃̵ᴗ˂̵)و',
+    '全世界最喜欢源源！(｡･ω･｡)ﾉ♡',
+    '源源可爱到爆炸！(*≧∀≦*)',
+    '源源是小天使！(｡•̀ᴗ-)✧',
+    '源源可爱无敌！(๑˃̵ᴗ˂̵)و'
+  ];
 
-    // 弹幕：随机不同祝福循环飘过
-    const danmaku = document.getElementById('danmaku');
-    for (let i = 0; i < 50; i++) {
-      setTimeout(() => {
-        const b = document.createElement('div');
-        b.className = 'bubble';
-        // 随机选择一条祝福
-        b.innerText = blessings[Math.floor(Math.random() * blessings.length)];
-        b.style.top = Math.random() * 90 + '%';
-        b.style.animationDuration = (Math.random() * 12 + 8) + 's';
-        b.style.opacity = Math.random() * 0.4 + 0.5;
-        danmaku.appendChild(b);
-        setTimeout(() => b.remove(), parseFloat(b.style.animationDuration) * 1000);
-      }, i * 200);
-    }
-
-    // 点击回复
-    const replies = [
-      '源源天下第一可爱！(* /ω＼*)',
-      '源源最最最可爱啦～(๑˃̵ᴗ˂̵)و',
-      '全世界最喜欢源源！(｡･ω･｡)ﾉ♡',
-      '源源可爱到爆炸！(*≧∀≦*)',
-      '源源是小天使！(｡•̀ᴗ-)✧',
-      '源源可爱无敌！(๑˃̵ᴗ˂̵)و'
-    ];
-
-    document.addEventListener('click', (e) => {
-      const tip = document.createElement('div');
-      tip.className = 'click-tip';
-      tip.innerText = replies[Math.floor(Math.random() * replies.length)];
-      tip.style.left = e.clientX - tip.offsetWidth / 2 + 'px';
-      tip.style.top = e.clientY - 20 + 'px';
-      document.body.appendChild(tip);
-      setTimeout(() => tip.remove(), 800);
-    });
-  </script>
+  document.addEventListener('click', (e) => {
+    const tip = document.createElement('div');
+    tip.className = 'click-tip';
+    tip.innerText = replies[Math.floor(Math.random() * replies.length)];
+    tip.style.left = e.clientX - tip.offsetWidth / 2 + 'px';
+    tip.style.top = e.clientY - 20 + 'px';
+    document.body.appendChild(tip);
+    setTimeout(() => tip.remove(), 800);
+  });
+</script>
 </body>
 </html>
 
