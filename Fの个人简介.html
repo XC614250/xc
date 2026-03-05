@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小F的社交主页</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Microsoft YaHei", sans-serif;
+  background: #1a1a2e;
+  background-image: linear-gradient(135deg, #24243a 25%, #1a1a2e 100%);
+  color: #e0e0e0;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.card {
+  max-width: 700px;
+  margin: 0 auto 30px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 30px 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+.avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 18px;
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+.title {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 8px;
+  color: #f0f0f0;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 14px;
+  color: #b8b8d4;
+  margin-bottom: 24px;
+}
+
+.music-box {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.music-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.music-btn:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.info {
+  line-height: 1.8;
+  font-size: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.video-box {
+  margin: 20px 0;
+  text-align: center;
+}
+.video-box iframe {
+  width: 100%;
+  max-width: 400px;
+  height: 220px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.fold-section {
+  margin-top: 16px;
+}
+.fold-btn {
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #e0e0e0;
+  padding: 12px;
+  border-radius: 12px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.fold-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.6s ease;
+}
+.fold-content.show {
+  max-height: 2000px;
+  margin-top: 12px;
+}
+
+.fold-inner {
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  padding: 18px 16px;
+  line-height: 1.9;
+  font-size: 14px;
+  white-space: pre-line;
+}
+
+.tip {
+  text-align: center;
+  font-size: 12px;
+  color: #999ac0;
+  margin-top: 10px;
+}
+
+a {
+  color: #a8b2d3;
+  text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <img src="https://pic1.imgdb.cn/item/69a92816a1838fcbddfc1ad0.png" class="avatar" alt="头像">
+  <div class="title">小F · F眼看人基</div>
+  <div class="subtitle">为爱发电 · 全职写卡人</div>
+
+  <div class="music-box">
+    <button class="music-btn" id="playBtn">播放</button>
+    <button class="music-btn" id="pauseBtn">暂停</button>
+  </div>
+
+  <div class="info">
+    🎩国家十级退堂鼓表演 🎤艺术家<br>
+    🐶🤍🏠🎀<br>
+    👑｜🇨🇳留子👩🏼‍🎓｜👱🏻‍♀️男女混血｜华籍人💋<br>
+    🌍梦想是环游世界<br>
+    💻冤种offer ｜0年国奖<br>
+    个人存款0.0000001百万💵| 座驾🚶<br>
+    ｜资深鉴黄师🧋 ｜PDD资深买手🏅<br>
+    🆔国家级身份证持有者｜清华北大没考｜雅思托福没考｜诺贝尔奖觊觎者🩵<br>
+    商务合作：3652467628<br>
+    🏄Internet冲浪达人｜熟练掌握🇨🇳语言
+  </div>
+
+  <!-- 视频直接展示，不折叠 -->
+  <div class="video-box">
+    <iframe src="https://pan.imgbed.link/file/325197" frameborder="0" allowfullscreen></iframe>
+  </div>
+
+  <!-- 折叠1：自我介绍 -->
+  <div class="fold-section">
+    <button class="fold-btn" onclick="toggle('fold1')">
+      自我介绍 🎐
+      <span>▼</span>
+    </button>
+    <div class="fold-content" id="fold1">
+      <div class="fold-inner">
+你好我是腐眼看人基，你可以叫我小F，F眼看人基是我的笔名（嗯嗯！）
+已经全职在家写卡了（终于找了点正事办了！）
+两个月30张卡，无共跑亲友（我哭惹…）
+所有卡均是个人创作，逻辑是不知道的，人设也是用ai润色的。
+本人来这个平台纯为爱发电的，没有盈利过一毛钱。
+（没有倒卖过猫粮，有点猫粮都发红包了或发福利，我甚至还倒贴💰）
+纯是给自己写爽了…！(^_−)☆
+
+本人性格温良单纯，目前无业在家全职写卡，
+愿意接受所有批评和老师们的教导>_<¦¦¦感谢！
+感谢每一位玩我卡的宝宝！我爱你！
+
+因为不想给mufy充月卡所以搭了个链接，我的碎碎念都在这里了…
+      </div>
+    </div>
+  </div>
+
+  <!-- 折叠2：关于我 & 写卡习惯 -->
+  <div class="fold-section">
+    <button class="fold-btn" onclick="toggle('fold2')">
+      关于我 & 写卡习惯 💌
+      <span>▼</span>
+    </button>
+    <div class="fold-content" id="fold2">
+      <div class="fold-inner">
+我目前玩过的卡很少很少，没赛博养胃之前大热卡只玩过那一位（好玩！😋😋）
+然后呢我属于是只写不玩，我现在所有轮数只有一千出头（咋这样）…饿( ‘-ωก̀ )
+
+本人喜欢吃瓜，有社交软件，但是发不了东西…
+本人不写虐u卡，也不写烂黄瓜（没有受虐倾向，不会写一些有纷争的东西(╥_╥)）
+
+喜欢上网冲浪，一般开头梗都是在网上找代餐或者我自己看片的时候觉得美味我就写了
+（智商不详淫商极高…！）
+
+然后本人是个新手，对于卡还是负责任的，
+不删不清不跑路，不卖号不倒卖猫粮
+（不是有钱…因为本人对于金钱要求还是很低的，目前我不玩游戏…）
+      </div>
+    </div>
+  </div>
+
+  <!-- 折叠3：统一问答 -->
+  <div class="fold-section">
+    <button class="fold-btn" onclick="toggle('fold3')">
+      统一问答 📝
+      <span>▼</span>
+    </button>
+    <div class="fold-content" id="fold3">
+      <div class="fold-inner">
+会不会出多人卡？
+：不会，这个我还没搞懂多人卡要怎么出…（我不会用那个功能（F很笨的≡ω≡）
+
+会不会出char里的npc？
+：概率很小，我不喜欢出衍生卡，出卡随机看心情，如果一些我想出的就会出，其他算了(╥_╥)
+
+爆代码来怎么办？
+：这个可以去网上搜，因为我也不知道…我能告诉你用指令拉…
+
+其他问题都可以做在网上搜得到( ‘-ωก̀ )
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">玻璃质感 · 酸涩唯美 · 小F专属</div>
+</div>
+
+<audio id="audio" loop src="https://music.163.com/song/media/outer/url?id=2031712789.mp3">
+
+<script>
+const audio = document.getElementById('audio');
+
+// 自动循环播放
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    audio.play().catch(() => {});
+  }, 500);
+});
+
+document.getElementById('playBtn').onclick = () => audio.play();
+document.getElementById('pauseBtn').onclick = () => audio.pause();
+
+// 折叠功能
+function toggle(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('show');
+}
+</script>
+
+</body>
+</html>
