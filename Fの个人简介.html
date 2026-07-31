@@ -1,296 +1,341 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>小F的社交主页</title>
+```html
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* 角色档案库列表 - 完整链接显示版 */
+.cen-dir-wrapper,
+.cen-dir-wrapper *,
+.cen-dir-wrapper *::before,
+.cen-dir-wrapper *::after {
+    box-sizing: border-box !important;
+    margin: 0;
+    padding: 0;
 }
 
-body {
-  font-family: "Microsoft YaHei", sans-serif;
-  background: #1a1a2e;
-  background-image: linear-gradient(135deg, #24243a 25%, #1a1a2e 100%);
-  color: #e0e0e0;
-  padding: 20px;
-  min-height: 100vh;
+.cen-dir-wrapper {
+    width: 100% !important;
+    max-width: 650px !important;
+    margin: 0 auto !important;
+    background: linear-gradient(145deg, #13151a, #0b0c0f) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 16px !important;
+    padding: 24px !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
 }
 
-.card {
-  max-width: 700px;
-  margin: 0 auto 30px;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 20px;
-  padding: 30px 24px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+.cen-dir-header {
+    text-align: center !important;
+    margin-bottom: 24px !important;
+    padding-bottom: 16px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
 }
 
-.avatar {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
-  margin: 0 auto 18px;
-  border: 2px solid rgba(255,255,255,0.2);
+.cen-dir-title {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    letter-spacing: 2px !important;
+    margin-bottom: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
 }
 
-.title {
-  text-align: center;
-  font-size: 22px;
-  margin-bottom: 8px;
-  color: #f0f0f0;
+.cen-dir-title::before,
+.cen-dir-title::after {
+    content: "" !important;
+    display: block !important;
+    width: 24px !important;
+    height: 2px !important;
+    background: rgba(255, 255, 255, 0.2) !important;
 }
 
-.subtitle {
-  text-align: center;
-  font-size: 14px;
-  color: #b8b8d4;
-  margin-bottom: 24px;
+.cen-dir-subtitle {
+    font-size: 11px !important;
+    color: #8892b0 !important;
+    letter-spacing: 1px !important;
 }
 
-.music-box {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 26px;
+.cen-dir-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
 }
 
-.music-btn {
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #e0e0e0;
-  padding: 8px 16px;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.music-btn:hover {
-  background: rgba(255,255,255,0.15);
-}
-
-.info {
-  line-height: 1.8;
-  font-size: 15px;
-  margin-bottom: 20px;
-  text-align: center;
+.cen-dir-item {
+    display: flex !important;
+    flex-direction: column !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.04) !important;
+    padding: 14px 16px !important;
+    border-radius: 10px !important;
+    text-decoration: none !important;
+    transition: all 0.25s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
 }
 
-.video-box {
-  margin: 20px 0;
-  text-align: center;
-}
-.video-box iframe {
-  width: 100%;
-  max-width: 400px;
-  height: 220px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-
-.fold-section {
-  margin-top: 16px;
-}
-.fold-btn {
-  width: 100%;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: #e0e0e0;
-  padding: 12px;
-  border-radius: 12px;
-  text-align: left;
-  cursor: pointer;
-  font-size: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.fold-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.6s ease;
-}
-.fold-content.show {
-  max-height: 2000px;
-  margin-top: 12px;
+.cen-dir-item::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    height: 100% !important;
+    width: 3px !important;
+    background: #64ffda !important;
+    opacity: 0 !important;
+    transition: opacity 0.25s ease !important;
 }
 
-.fold-inner {
-  background: rgba(255,255,255,0.03);
-  border-radius: 12px;
-  padding: 18px 16px;
-  line-height: 1.9;
-  font-size: 14px;
-  white-space: pre-line;
+.cen-dir-item:hover {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
 }
 
-.tip {
-  text-align: center;
-  font-size: 12px;
-  color: #999ac0;
-  margin-top: 10px;
+.cen-dir-item:hover::before {
+    opacity: 1 !important;
 }
 
-a {
-  color: #a8b2d3;
-  text-decoration: none;
+.cen-dir-name {
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    color: #e2e8f0 !important;
+    margin-bottom: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.cen-dir-url {
+    font-size: 12px !important;
+    color: #8892b0 !important;
+    font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace !important;
+    word-break: break-all !important;
+    line-height: 1.4 !important;
+    opacity: 0.8 !important;
+}
+
+.cen-dir-item:hover .cen-dir-url {
+    color: #64ffda !important;
+    opacity: 1 !important;
+}
+
+.cen-dir-icon {
+    width: 14px !important;
+    height: 14px !important;
+    opacity: 0.5 !important;
+    transition: opacity 0.2s ease !important;
+    position: relative !important;
+    display: inline-block !important;
+}
+
+.cen-dir-item:hover .cen-dir-icon {
+    opacity: 1 !important;
+}
+
+.cen-dir-icon::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 2px !important;
+    right: 2px !important;
+    width: 5px !important;
+    height: 5px !important;
+    border-top: 1.5px solid #64ffda !important;
+    border-right: 1.5px solid #64ffda !important;
+}
+
+.cen-dir-icon::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 2px !important;
+    right: 2px !important;
+    width: 9px !important;
+    height: 1.5px !important;
+    background: #64ffda !important;
+    transform-origin: top right !important;
+    transform: rotate(-45deg) !important;
+}
+
+.cen-dir-footer {
+    text-align: center !important;
+    margin-top: 24px !important;
+    font-size: 10px !important;
+    color: #555 !important;
+    letter-spacing: 1px !important;
 }
 </style>
-</head>
 
-<body>
-
-<div class="card">
-  <img src="https://pic1.imgdb.cn/item/69a92816a1838fcbddfc1ad0.png" class="avatar" alt="头像">
-  <div class="title">小F · F眼看人基</div>
-  <div class="subtitle">为爱发电 · 全职写卡人</div>
-
-  <div class="music-box">
-    <button class="music-btn" id="playBtn">播放</button>
-    <button class="music-btn" id="pauseBtn">暂停</button>
-  </div>
-
-  <div class="info">
-    🎩国家十级退堂鼓表演 🎤艺术家<br>
-    🐶🤍🏠🎀<br>
-    👑｜🇨🇳留子👩🏼‍🎓｜👱🏻‍♀️男女混血｜华籍人💋<br>
-    🌍梦想是环游世界<br>
-    💻冤种offer ｜0年国奖<br>
-    个人存款0.0000001百万💵| 座驾🚶<br>
-    ｜资深鉴黄师🧋 ｜PDD资深买手🏅<br>
-    🆔国家级身份证持有者｜清华北大没考｜雅思托福没考｜诺贝尔奖觊觎者🩵<br>
-    商务合作：3652467628<br>
-    🏄Internet冲浪达人｜熟练掌握🇨🇳语言
-  </div>
-
-  <!-- 视频直接展示，不折叠 -->
-  <div class="video-box">
-    <iframe src="https://pan.imgbed.link/file/325197" frameborder="0" allowfullscreen></iframe>
-  </div>
-
-  <!-- 折叠1：自我介绍 -->
-  <div class="fold-section">
-    <button class="fold-btn" onclick="toggle('fold1')">
-      自我介绍 🎐
-      <span>▼</span>
-    </button>
-    <div class="fold-content" id="fold1">
-      <div class="fold-inner">
-你好我是腐眼看人基，你可以叫我小F，F眼看人基是我的笔名（嗯嗯！）
-已经全职在家写卡了（终于找了点正事办了！）
-两个月30张卡，无共跑亲友（我哭惹…）
-所有卡均是个人创作，逻辑是不知道的，人设也是用ai润色的。
-
-本人性格温良单纯，目前无业在家全职写卡，
-愿意接受所有批评和老师们的教导>_<¦¦¦感谢！
-感谢每一位玩我卡的宝宝！我爱你！
-
-因为不想给mufy充月卡所以搭了个链接，管理员啥时候让我进群好想领会员。我的碎碎念都在这里了…
-      </div>
+<div class="cen-dir-wrapper">
+    <div class="cen-dir-header">
+        <div class="cen-dir-title">CHARACTER ARCHIVE</div>
+        <div class="cen-dir-subtitle">全角色数据索引终端 // 完整链接模式</div>
     </div>
-  </div>
-
-  <!-- 折叠2：关于我 & 写卡习惯 -->
-  <div class="fold-section">
-    <button class="fold-btn" onclick="toggle('fold2')">
-      关于我 & 写卡习惯 💌
-      <span>▼</span>
-    </button>
-    <div class="fold-content" id="fold2">
-      <div class="fold-inner">
-我目前玩过的卡很少很少（我自己卡我都不玩嗯对。）
-然后呢我属于是只写不玩，我现在所有轮数只有一千出头（咋这样）…饿( ‘-ωก̀ )
-
-本人喜欢吃瓜，有社交软件，但是发不了东西…
-本人不写虐u卡，也不写烂黄瓜（没有受虐倾向（但是话又说回来），不会写一些有纷争的东西(╥_╥)）
-        另外不喜欢在卡里加女配（：不喜欢搞雌竞的）产出都是正常の恶俗卡
-        不写有争议的卡，有问题都可以在评论区反馈(^_−)☆
-        
-  
-
-喜欢上网冲浪，一般开头梗都是在网上找代餐或者我自己看片的时候觉得美味我就写了
-（智商不详淫商极高…！）
-
-本人是个新手，但对于卡还是负责任的
-          
-关于流量：其实我并不怎么在乎，我始终认为人红是非多，所以我更希望自己能透明一点
-  这完全就是mufy的推流问题
-  本人不是玻璃心，只要不是卡的问题，其他我都不怕（永不退圈。）
-          
-      </div>
+    
+    <div class="cen-dir-list">
+        <a href="https://chat.mufy.ai/chat?shareCode=qZT6Xc9NUhLbA7Yr" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">江珉炀 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=qZT6Xc9NUhLbA7Yr</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=cFq8txt2QK2rCjsB" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">习倦 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=cFq8txt2QK2rCjsB</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=q8xQEYGdCDtXiUyi" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">任舟时 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=q8xQEYGdCDtXiUyi</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=V9eXHb5QMALTM83q" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">时默褚 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=V9eXHb5QMALTM83q</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=nZ8zVgHCZ3HQgWzG" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">林星宥 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=nZ8zVgHCZ3HQgWzG</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=kKtfCEHCWre6D7HG" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">韩志皓 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=kKtfCEHCWre6D7HG</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=YLf2sfUXuRnjcsfA" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">肖骋 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=YLf2sfUXuRnjcsfA</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=9wvCXdnjKgmbUZYi" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">周牧驰 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=9wvCXdnjKgmbUZYi</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=kb5BWxy42uZrNs5v" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">闵承宇 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=kb5BWxy42uZrNs5v</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=Tk3un467XyBU4bYq" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">邱陵沅 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=Tk3un467XyBU4bYq</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=V6YNf8C2QGF8bvsU" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">宋林邺 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=V6YNf8C2QGF8bvsU</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=PdzEJTKs7YFXBatQ" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">程嘉园 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=PdzEJTKs7YFXBatQ</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=tsZ3ZQxudjNSjysM" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">徐竣年 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=tsZ3ZQxudjNSjysM</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=NSqzhysizGB6SRMY" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">沈戾妄 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=NSqzhysizGB6SRMY</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=RiGxM36DGBusZ5dQ" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">萧天寂 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=RiGxM36DGBusZ5dQ</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=k7usjgFGJZg7jhBj" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">莫恩得 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=k7usjgFGJZg7jhBj</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=EamJynBQims2k74e" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">祁淮路 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=EamJynBQims2k74e</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=hWpp49LKXQDaVjLQ" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">谢温洲 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=hWpp49LKXQDaVjLQ</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=sYufghBpUst5rWyc" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">李蒋宥 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=sYufghBpUst5rWyc</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=zQdq229DkkCRFZ9e" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">姜裴杉 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=zQdq229DkkCRFZ9e</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=9GhG9aVywuv75jkc" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">肖钰阳 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=9GhG9aVywuv75jkc</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=SB72BdyLrP6dGqpf" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">周天乐 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=SB72BdyLrP6dGqpf</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=TX8i2MbFjSF2Lekf" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">顾琛路 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=TX8i2MbFjSF2Lekf</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=rGPeDpUtbDnjByaQ" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">陆江晏 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=rGPeDpUtbDnjByaQ</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=2Ek4E6g2VKe9Ra34" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">温倾渡 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=2Ek4E6g2VKe9Ra34</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=G36s5KpTsvuuh5iS" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">傅既珩 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=G36s5KpTsvuuh5iS</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=ha3RAe76P5aLfjAU" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">秦洛野 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=ha3RAe76P5aLfjAU</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=sK9J4rLQTr6UBDe4" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">厉延安 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=sK9J4rLQTr6UBDe4</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=MTLbHFV66itR5QkG" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">霍峥舟 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=MTLbHFV66itR5QkG</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=2Fv4fcUu242WeaDJ" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">林消慕 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=2Fv4fcUu242WeaDJ</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=7Bwi97umt7sTmtxv" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">涼悠一 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=7Bwi97umt7sTmtxv</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=GDfkVZxN6zXxgNqJ" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">澪 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=GDfkVZxN6zXxgNqJ</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=neuzpLnvz6hwpWpH" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">艾洛尔 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=neuzpLnvz6hwpWpH</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=ryyFjtFwAzbjCXaW" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">江喻眠 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=ryyFjtFwAzbjCXaW</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=kYYHA3yHZPRhTg5T" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">沈书墨 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=kYYHA3yHZPRhTg5T</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=sqvg4xxMqwy8Rmnc" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">温叶淞 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=sqvg4xxMqwy8Rmnc</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=WfSCMtBnL363x2Q9" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">李政仁 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=WfSCMtBnL363x2Q9</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=BnyJMfE7D4a45auL" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">宋瑜迟 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=BnyJMfE7D4a45auL</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=vB54iBPuLWSNksSq" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">陆淮允 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=vB54iBPuLWSNksSq</div>
+        </a>
+        <a href="https://chat.mufy.ai/chat?shareCode=GVMhDudMy8WJ4NzP" target="_blank" class="cen-dir-item">
+          <div class="cen-dir-name">崔承赫 <span class="cen-dir-icon"></span></div>
+          <div class="cen-dir-url">https://chat.mufy.ai/chat?shareCode=GVMhDudMy8WJ4NzP</div>
+        </a>
     </div>
-  </div>
-
-  <!-- 折叠3：统一问答 -->
-  <div class="fold-section">
-    <button class="fold-btn" onclick="toggle('fold3')">
-      统一问答 📝
-      <span>▼</span>
-    </button>
-    <div class="fold-content" id="fold3">
-      <div class="fold-inner">
-会不会出多人卡？
-：不会，这个我还没搞懂多人卡要怎么出…（我不会用那个功能（F很笨的≡ω≡）
-
-会不会出char里的npc？
-：概率很小，我不喜欢出衍生卡，出卡随机看心情，如果一些我想出的就会出，其他算了(╥_╥)
-
-爆代码来怎么办？
-：这个可以去网上搜，因为我也不知道…我能告诉你用指令拉…
-
-其他问题都可以做在网上搜得到≡ω≡
-        
-        以下是Fの找的链接
-来自F收藏的看篇或漫画の网页合集
-（进不去需要开加速器，存档码一下≡ω≡，有需要的失效了可以提醒我补链接（＾_-））：
-a站：https://acfan.fans/
-海棠网页：https://www.lvhtebook.com/
-香香腐宅网页：https://boylove.cc/home/book/cate.html
-漫蛙网页：https://www.manwadu.cc/
-啵乐无广版网页：https://www.boleboy.cc/#/pages/index/index
-禁漫天堂：https://18comic.vip/
-哔咔：http://picacgp.com/
-海角社区：https://haijiao.com/home
-番号：https://www.xvideos.com/
-麻豆传媒：https://madou.com/
-糖心vlong：https://t-x.love/
-推特：www.x.com
-油管：https://m.youtube.com/
-      </div>
-    </div>
-  </div>
-
-  <div class="tip"> · FFF · 小F专属</div>
+    
+    <div class="cen-dir-footer">SYSTEM GENERATED // ENCRYPTED CONNECTION</div>
 </div>
-
-<audio id="audio" loop src="https://music.163.com/song/media/outer/url?id=2031712789.mp3">
-
-<script>
-const audio = document.getElementById('audio');
-
-// 自动循环播放
-window.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => {
-    audio.play().catch(() => {});
-  }, 500);
-});
-
-document.getElementById('playBtn').onclick = () => audio.play();
-document.getElementById('pauseBtn').onclick = () => audio.pause();
-
-// 折叠功能
-function toggle(id) {
-  const el = document.getElementById(id);
-  el.classList.toggle('show');
-}
-</script>
-
-</body>
-</html>
+```
